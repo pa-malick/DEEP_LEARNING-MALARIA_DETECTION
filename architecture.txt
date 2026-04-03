@@ -1,0 +1,68 @@
+================================================================
+  DEEP_LEARNING-MALARIA_DETECTION
+  Architecture des fichiers et dossiers
+  Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+================================================================
+
+MALARIA_DETECTION/
+│
+├── data/
+│   └── cell_images/                  ← Dataset brut (à placer ici)
+│       ├── Parasitized/              ← Images de cellules infectées (.png)
+│       └── Uninfected/               ← Images de cellules saines (.png)
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_loader.py                ← Chargement, affichage, split des données
+│   ├── preprocessing.py              ← Normalisation, augmentation, ImageDataGenerator
+│   ├── models.py                     ← Définition des 3 architectures CNN
+│   ├── train.py                      ← Entraînement des modèles
+│   ├── evaluation.py                 ← Métriques, courbes d'apprentissage, comparaison
+│   └── utils.py                      ← Sauvegarde / chargement du modèle, helpers
+│
+├── models/
+│   ├── cnn_simple.keras              ← Modèle CNN Simple (généré)
+│   ├── cnn_deep.keras                ← Modèle CNN Profond (généré)
+│   ├── cnn_bn.keras                  ← Modèle CNN + BatchNorm (généré)
+│   └── best_model.keras              ← Meilleur modèle sauvegardé (généré)
+│
+├── metrics/
+│   ├── results.json                  ← Métriques JSON de tous les modèles (généré)
+│   ├── learning_curves_*.png         ← Courbes loss/accuracy par modèle (générées)
+│   └── comparaison_modeles.png       ← Graphique comparatif (généré)
+│
+├── app/
+│   ├── app.py                        ← Serveur Flask
+│   ├── templates/
+│   │   └── index.html                ← Interface web de prédiction
+│   └── static/
+│       ├── css/
+│       │   └── style.css             ← Styles personnalisés
+│       └── js/
+│           └── script.js             ← Logique front-end
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_preprocessing.py         ← Tests unitaires preprocessing
+│   └── test_models.py                ← Tests unitaires modèles
+│
+├── notebooks/
+│   └── exploration.ipynb             ← Analyse exploratoire (EDA)
+│
+├── main.py                           ← Pipeline complète (un seul point d'entrée)
+├── requirements.txt                  ← Dépendances Python
+├── Makefile                          ← Commandes automatisées
+├── architecture.txt                  ← Ce fichier
+└── README.md                         ← Documentation GitHub professionnelle
+
+================================================================
+  POUR DÉMARRER
+================================================================
+
+1.  Placer le dossier cell_images/ dans data/
+2.  pip install -r requirements.txt   (ou : make install)
+3.  python main.py                    (ou : make run)
+4.  python app/app.py                 (ou : make serve)
+5.  Ouvrir http://localhost:5000
+
+================================================================

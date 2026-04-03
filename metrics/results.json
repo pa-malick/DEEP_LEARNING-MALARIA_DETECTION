@@ -1,0 +1,23 @@
+{
+    "meilleur_modele": "CNN_Deep",
+    "resultats": {
+        "CNN_Simple": {
+            "accuracy": 0.9623,
+            "precision": 0.9548,
+            "recall": 0.9705,
+            "f1_score": 0.9626
+        },
+        "CNN_Deep": {
+            "accuracy": 0.9664,
+            "precision": 0.963,
+            "recall": 0.97,
+            "f1_score": 0.9665
+        },
+        "CNN_BN": {
+            "accuracy": 0.9586,
+            "precision": 0.9459,
+            "recall": 0.9729,
+            "f1_score": 0.9592
+        }
+    }
+}
