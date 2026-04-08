@@ -1,5 +1,5 @@
-tensorflow==2.15.0
-numpy==1.25.2
+tensorflow-cpu==2.18.0
+numpy==1.26.4
 pandas==2.1.0
 matplotlib==3.7.2
 seaborn==0.12.2

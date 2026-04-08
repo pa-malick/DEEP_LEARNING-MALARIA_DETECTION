@@ -7,10 +7,13 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python)](https://python.org)
 [![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15-orange?style=flat-square&logo=tensorflow)](https://tensorflow.org)
 [![Flask](https://img.shields.io/badge/Flask-3.0-black?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-purple?style=flat-square&logo=bootstrap)](https://getbootstrap.com)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker)](https://docker.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 
 **Papa Malick NDIAYE** · Master Data Science & Génie Logiciel · Université Alioune Diop de Bambey
+
+🐙 **GitHub :** https://github.com/pa-malick/MALARIA_DETECTION
+💼 **LinkedIn :** https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309
 
 </div>
 
@@ -35,8 +38,21 @@ Ce projet propose une solution d'IA pour **automatiser la détection du parasite
 - ✅ Courbes d'apprentissage (loss + accuracy) par modèle
 - ✅ Matrices de confusion + métriques complètes
 - ✅ API Flask avec upload d'image et prédiction en temps réel
-- ✅ Interface web Bootstrap responsive avec drag & drop
+- ✅ Interface web futuriste (Three.js + Anime.js + GSAP)
+- ✅ Containerisé avec Docker
 - ✅ Tests unitaires pytest
+
+---
+
+## 📊 Résultats obtenus
+
+| Modèle | Accuracy | Précision | Rappel | F1-Score |
+|--------|----------|-----------|--------|----------|
+| CNN_Simple | 96.23% | 95.48% | 97.05% | 96.26% |
+| **CNN_Deep** | **96.64%** | **96.30%** | **97.00%** | **96.65%** |
+| CNN_BN | 95.86% | 94.59% | 97.29% | 95.92% |
+
+🏆 **Meilleur modèle : CNN_Deep** avec **96.64% d'accuracy**
 
 ---
 
@@ -53,13 +69,15 @@ MALARIA_DETECTION/
 │   ├── evaluation.py         ← Métriques, courbes, comparaison
 │   └── utils.py              ← Save/load modèle, prédiction unitaire
 ├── app/
-│   ├── app.py                ← API Flask
-│   ├── templates/index.html  ← Interface web
+│   ├── app.py                ← API Flask (4 endpoints)
+│   ├── templates/index.html  ← Interface futuriste (Three.js + GSAP)
 │   └── static/css + js/
-├── models/                   ← Modèles sauvegardés (générés)
+├── models/                   ← Modèles .keras (générés)
 ├── metrics/                  ← Graphiques & métriques (générés)
 ├── tests/                    ← Tests unitaires pytest
 ├── main.py                   ← Pipeline complète
+├── Dockerfile                ← Image Docker
+├── docker-compose.yml        ← Orchestration Docker
 ├── requirements.txt
 └── Makefile
 ```
@@ -68,58 +86,56 @@ MALARIA_DETECTION/
 
 ## 🚀 Installation & Utilisation
 
+### Option 1 — Local (Python)
+
 ```bash
 # 1. Cloner
-git clone https://github.com/votre-username/MALARIA_DETECTION.git
+git clone https://github.com/pa-malick/MALARIA_DETECTION.git
 cd MALARIA_DETECTION
 
-# 2. Installer les dépendances
+# 2. Installer
 make install
 
 # 3. Placer le dataset
-# Copier cell_images/ dans data/
-# Structure attendue :
-#   data/cell_images/Parasitized/  (images .png)
-#   data/cell_images/Uninfected/   (images .png)
+# → data/cell_images/Parasitized/ et data/cell_images/Uninfected/
 
-# 4. Lancer la pipeline
+# 4. Lancer la pipeline ML
 make run
 
 # 5. Démarrer l'API Flask
 make serve
 # → http://localhost:5000
+```
 
-# 6. Tests
-make test
+### Option 2 — Docker
+
+```bash
+# Construire et lancer en une commande
+docker-compose up --build
+
+# → http://localhost:5000
 ```
 
 ---
 
 ## 🧠 Architectures CNN
 
-| Modèle | Blocs Conv | Paramètres | Spécificité |
-|--------|-----------|------------|-------------|
-| CNN_Simple | 2 | ~200K | Baseline rapide |
-| CNN_Deep   | 3 | ~500K | Plus de capacité |
-| CNN_BN     | 3 + BN | ~500K | Entraînement plus stable |
-
----
-
-## 📊 Résultats attendus
-
-Avec le dataset NIH Cell Images (27 558 images) et 20 époques d'entraînement :
-
-| Modèle | Accuracy attendue |
-|--------|------------------|
-| CNN_Simple | ~93% |
-| CNN_Deep   | ~94% |
-| CNN_BN     | ~95% |
+| Modèle | Blocs Conv | Spécificité |
+|--------|-----------|-------------|
+| CNN_Simple | 2 | Baseline rapide |
+| CNN_Deep | 3 | Plus de capacité |
+| CNN_BN | 3 + BatchNorm | Entraînement stable |
 
 ---
 
 ## 🖥️ Interface Web
 
-L'interface permet de glisser-déposer une image de cellule sanguine et d'obtenir instantanément la prédiction du modèle avec un score de confiance.
+Interface futuriste avec :
+- **Three.js** — fond de particules 3D animé
+- **GSAP** — animations d'entrée et scroll
+- **Anime.js** — micro-animations UI
+- **Drag & Drop** — upload d'image intuitif
+- **Jauge de confiance** — probabilité animée
 
 ---
 
@@ -131,33 +147,36 @@ L'interface permet de glisser-déposer une image de cellule sanguine et d'obteni
 | Traitement image | PIL, ImageDataGenerator |
 | Visualisation | Matplotlib, Seaborn |
 | API | Flask |
-| Interface | HTML, CSS, Bootstrap 5, JavaScript |
+| Interface | Three.js, GSAP, Anime.js |
+| Déploiement | Docker, Render |
 | Tests | Pytest |
 
 ---
 
 ## 💡 Améliorations possibles
 
-- [ ] Transfer Learning avec MobileNetV2 ou EfficientNet (>97% accuracy)
-- [ ] Grad-CAM pour visualiser ce que le modèle "regarde"
-- [ ] Déploiement sur Render.com ou Hugging Face Spaces
+- [ ] Transfer Learning avec MobileNetV2 (>97% accuracy)
+- [ ] Grad-CAM pour visualiser les zones d'attention du modèle
+- [ ] Déploiement sur Render ou Hugging Face Spaces
 - [ ] Application mobile (TensorFlow Lite)
 
 ---
 
 ## 📥 Dataset
 
-Le dataset utilisé est le **NIH Malaria Dataset** disponible sur :
-- [Kaggle – Cell Images for Detecting Malaria](https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria)
+**NIH Malaria Dataset** — 27 558 images PNG :
+- [Kaggle](https://www.kaggle.com/datasets/iarunava/cell-images-for-detecting-malaria)
 - [NIH Official](https://ceb.nlm.nih.gov/repositories/malaria-datasets/)
 
 ---
 
 ## 👨‍💻 Auteur
 
-**Papa Malick NDIAYE**  
-Master Data Science & Génie Logiciel — Université Alioune Diop de Bambey (UADB)  
+**Papa Malick NDIAYE**
+Master Data Science & Génie Logiciel — Université Alioune Diop de Bambey (UADB)
 📧 njaymika@gmail.com
+🐙 [github.com/pa-malick/MALARIA_DETECTION](https://github.com/pa-malick/MALARIA_DETECTION)
+💼 [linkedin.com/in/papa-malick-ndiaye-b58b22309](https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309)
 
 ---
 

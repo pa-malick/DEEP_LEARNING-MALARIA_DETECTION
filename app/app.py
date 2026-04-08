@@ -1,43 +1,36 @@
-# ================================================================
-# app.py  –  API Flask + interface de prédiction
-#
-# Auteur : Papa Malick NDIAYE
-# Master Data Science & Génie Logiciel – UADB
+# app.py – API Flask + interface web de prédiction
+# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
 #
 # Endpoints :
-#   GET  /           → interface web
-#   POST /predict    → prédiction sur image uploadée
-#   GET  /metrics    → métriques JSON
-#   GET  /health     → statut API
-# ================================================================
+#   GET  /         → interface HTML
+#   POST /predict  → reçoit une image, retourne la prédiction JSON
+#   GET  /metrics  → métriques JSON des modèles
+#   GET  /health   → statut de l'API
 
 import sys
 import os
 import uuid
+
 from flask import Flask, request, jsonify, render_template
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from ImageDataGenerator.utils import charger_meilleur, charger_metriques, predire_image
+
+from utils import charger_meilleur, charger_metriques, predire_image
 
 app = Flask(__name__)
 
-# Dossier temporaire pour les images uploadées
 UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "static", "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-# Formats d'images acceptés
 EXTENSIONS_VALIDES = {"png", "jpg", "jpeg", "bmp"}
 
-# Chargement du modèle au démarrage
-BASE_DIR = os.path.dirname(__file__)
-modele   = charger_meilleur(os.path.join(BASE_DIR, "..", "models"))
+BASE_DIR  = os.path.dirname(__file__)
+modele    = charger_meilleur(os.path.join(BASE_DIR, "..", "models"))
 metriques = charger_metriques(os.path.join(BASE_DIR, "..", "metrics", "results.json"))
 
 
 def extension_valide(filename: str) -> bool:
-    return "." in filename and \
-           filename.rsplit(".", 1)[1].lower() in EXTENSIONS_VALIDES
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in EXTENSIONS_VALIDES
 
 
 @app.route("/")
@@ -47,10 +40,6 @@ def index():
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    """
-    Reçoit une image de cellule sanguine et retourne la prédiction.
-    L'image est sauvegardée temporairement, analysée, puis supprimée.
-    """
     if "image" not in request.files:
         return jsonify({"erreur": "Aucune image reçue."}), 400
 
@@ -62,10 +51,10 @@ def predict():
     if not extension_valide(fichier.filename):
         return jsonify({"erreur": "Format non supporté. Utilisez PNG, JPG ou BMP."}), 400
 
-    # Sauvegarde temporaire
     ext        = fichier.filename.rsplit(".", 1)[1].lower()
     nom_temp   = f"{uuid.uuid4().hex}.{ext}"
     chemin_tmp = os.path.join(UPLOAD_DIR, nom_temp)
+
     fichier.save(chemin_tmp)
 
     try:
@@ -77,7 +66,8 @@ def predict():
             "image_url"  : f"/static/uploads/{nom_temp}"
         })
     except Exception as e:
-        os.remove(chemin_tmp)
+        if os.path.exists(chemin_tmp):
+            os.remove(chemin_tmp)
         return jsonify({"erreur": str(e)}), 500
 
 
@@ -88,9 +78,10 @@ def get_metrics():
 
 @app.route("/health")
 def health():
-    return jsonify({"status": "ok", "message": "API opérationnelle ✔"})
+    return jsonify({"status": "ok", "message": "API operationnelle"})
 
 
 if __name__ == "__main__":
-    print("\n🚀  API Flask démarrée sur  http://localhost:5000")
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    print(f"\n[OK] API Flask demarree sur http://localhost:{port}")
+    app.run(debug=False, host="0.0.0.0", port=port)

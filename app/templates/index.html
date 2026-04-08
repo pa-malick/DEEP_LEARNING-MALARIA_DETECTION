@@ -3,112 +3,426 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malaria Detection – Deep Learning</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <title>Malaria Detection — Deep Learning | Papa Malick NDIAYE</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <!-- Notre CSS -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+
+  <!-- Three.js : bibliothèque 3D pour le fond animé -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP : animations fluides et professionnelles -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <!-- Anime.js : animations légères pour les éléments UI -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-dark">
-    <div class="container">
-      <span class="navbar-brand">
-        🦟 Malaria Cell Detection
-      </span>
-      <span class="badge bg-success">API Active ✓</span>
+  <!-- ── Canvas Three.js (fond 3D) ── -->
+  <!-- Ce canvas est en position fixe derrière tout le contenu -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ── Overlay sombre pour lisibilité ── -->
+  <div class="bg-overlay"></div>
+
+  <!-- ── NAVBAR ── -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <span class="brand-icon">⬡</span>
+        <span class="brand-text">MALARIA<span class="accent">.</span>AI</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#hero">Accueil</a></li>
+        <li><a href="#predict">Analyser</a></li>
+        <li><a href="#models">Modèles</a></li>
+        <li><a href="#about">À propos</a></li>
+      </ul>
+      <div class="nav-status">
+        <span class="pulse-dot"></span>
+        <span>SYSTÈME ACTIF</span>
+      </div>
     </div>
   </nav>
 
-  <div class="container py-4">
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-content">
 
-    <!-- HERO -->
-    <div class="hero-card mb-4">
-      <div>
-        <h1 class="hero-title">Détection du Paludisme</h1>
-        <p class="hero-sub">Deep Learning · CNN · Master DSGL · UADB · Papa Malick NDIAYE</p>
-        <p class="hero-desc">Uploadez une image de cellule sanguine pour savoir si elle est infectée par le parasite <em>Plasmodium</em>.</p>
+      <!-- Badge animé -->
+      <div class="hero-badge" id="hero-badge">
+        <span class="badge-icon"><i class="fas fa-dna"></i></span>
+        <span>Deep Learning · CNN · Master DSGL · UADB</span>
       </div>
+
+      <!-- Titre principal -->
+      <h1 class="hero-title" id="hero-title">
+        <span class="title-line">DÉTECTION DU</span>
+        <span class="title-line accent-glow">PALUDISME</span>
+        <span class="title-line sub">PAR INTELLIGENCE ARTIFICIELLE</span>
+      </h1>
+
+      <!-- Description -->
+      <p class="hero-desc" id="hero-desc">
+        Un système de Deep Learning capable de détecter automatiquement
+        le parasite <em>Plasmodium</em> dans les cellules sanguines
+        avec une précision de <strong id="hero-acc">—</strong>.
+      </p>
+
+      <!-- Boutons CTA -->
+      <div class="hero-cta" id="hero-cta">
+        <a href="#predict" class="btn-primary">
+          <i class="fas fa-microscope"></i> Analyser une cellule
+        </a>
+        <a href="#models" class="btn-ghost">
+          <i class="fas fa-chart-bar"></i> Voir les résultats
+        </a>
+      </div>
+
+      <!-- Stats en bas du hero -->
+      <div class="hero-stats" id="hero-stats">
+        <div class="hstat">
+          <span class="hstat-val">27 558</span>
+          <span class="hstat-lbl">Images analysées</span>
+        </div>
+        <div class="hstat-sep"></div>
+        <div class="hstat">
+          <span class="hstat-val">3</span>
+          <span class="hstat-lbl">Architectures CNN</span>
+        </div>
+        <div class="hstat-sep"></div>
+        <div class="hstat">
+          <span class="hstat-val" id="stat-acc">—</span>
+          <span class="hstat-lbl">Meilleure accuracy</span>
+        </div>
+        <div class="hstat-sep"></div>
+        <div class="hstat">
+          <span class="hstat-val">2</span>
+          <span class="hstat-lbl">Classes détectées</span>
+        </div>
+      </div>
+
     </div>
 
-    <div class="row g-4">
+    <!-- Indicateur de défilement -->
+    <div class="scroll-indicator">
+      <div class="scroll-line-anim"></div>
+      <span>DÉFILER</span>
+    </div>
+  </section>
 
-      <!-- COLONNE GAUCHE : métriques + upload -->
-      <div class="col-lg-5">
-
-        <!-- Meilleur modèle -->
-        <div class="card-dark mb-4">
-          <h2 class="card-title-sm">🏆 Meilleur modèle</h2>
-          <p class="model-name" id="best-model">Chargement…</p>
-          <div class="row g-2" id="metrics-row">
-            <div class="col-6"><div class="metric-box"><span class="mval" id="m-acc">—</span><span class="mlbl">Accuracy</span></div></div>
-            <div class="col-6"><div class="metric-box"><span class="mval" id="m-prec">—</span><span class="mlbl">Précision</span></div></div>
-            <div class="col-6"><div class="metric-box"><span class="mval" id="m-rec">—</span><span class="mlbl">Rappel</span></div></div>
-            <div class="col-6"><div class="metric-box"><span class="mval" id="m-f1">—</span><span class="mlbl">F1-Score</span></div></div>
-          </div>
+  <!-- ── PRÉDICTION ── -->
+  <section id="predict">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <div>
+          <p class="section-label">ANALYSE EN TEMPS RÉEL</p>
+          <h2 class="section-title">Scanner une <span class="accent-glow">cellule sanguine</span></h2>
         </div>
+      </div>
 
-        <!-- Upload -->
-        <div class="card-dark">
-          <h2 class="card-title-sm">🔬 Analyser une cellule</h2>
-          <p class="text-muted small">Formats acceptés : PNG, JPG, BMP</p>
+      <div class="predict-layout">
+
+        <!-- Zone d'upload -->
+        <div class="upload-panel">
+          <div class="panel-header">
+            <i class="fas fa-upload"></i>
+            <span>IMPORTER UNE IMAGE</span>
+          </div>
 
           <div class="upload-zone" id="upload-zone">
-            <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.bmp" class="file-input-hidden"/>
-            <div id="upload-placeholder">
-              <div class="upload-icon">📁</div>
-              <p>Glissez une image ici<br><small>ou cliquez pour parcourir</small></p>
+            <input type="file" id="file-input"
+                   accept=".png,.jpg,.jpeg,.bmp"
+                   class="file-input-hidden"/>
+            <div id="upload-placeholder" class="upload-placeholder">
+              <div class="upload-icon-wrap">
+                <i class="fas fa-microscope"></i>
+              </div>
+              <p>Glissez une image ici</p>
+              <small>ou cliquez pour parcourir</small>
+              <div class="upload-formats">PNG · JPG · BMP</div>
             </div>
-            <img id="preview-img" class="preview-img hidden" alt="Aperçu"/>
+            <img id="preview-img" class="preview-img hidden" alt="Aperçu cellule"/>
           </div>
 
-          <button class="btn-predict w-100 mt-3" id="btn-predict" disabled>
-            Analyser ↗
+          <button class="btn-scan" id="btn-predict" disabled>
+            <span class="btn-scan-icon"><i class="fas fa-search-plus"></i></span>
+            <span class="btn-scan-text">LANCER L'ANALYSE</span>
+            <span class="btn-scan-bar"></span>
           </button>
-
-          <!-- Résultat -->
-          <div id="result-box" class="result-box hidden mt-3"></div>
         </div>
 
+        <!-- Panneau de résultat -->
+        <div class="result-panel">
+          <div class="panel-header">
+            <i class="fas fa-chart-line"></i>
+            <span>RÉSULTAT D'ANALYSE</span>
+          </div>
+
+          <!-- État idle (avant analyse) -->
+          <div class="result-idle" id="result-idle">
+            <div class="idle-ring">
+              <div class="idle-ring-inner">
+                <i class="fas fa-shield-virus"></i>
+              </div>
+            </div>
+            <h3>En attente</h3>
+            <p>Uploadez une image de cellule sanguine pour obtenir une prédiction instantanée du modèle CNN.</p>
+            <div class="idle-info">
+              <div class="idle-info-item">
+                <i class="fas fa-bolt"></i> Analyse en moins d'1 seconde
+              </div>
+              <div class="idle-info-item">
+                <i class="fas fa-brain"></i> Modèle CNN entraîné sur 27 558 images
+              </div>
+              <div class="idle-info-item">
+                <i class="fas fa-check-double"></i> 2 classes : Parasitized / Uninfected
+              </div>
+            </div>
+          </div>
+
+          <!-- Résultat après analyse -->
+          <div class="result-output hidden" id="result-output">
+            <div class="result-verdict" id="result-verdict"></div>
+            <div class="result-label" id="result-label"></div>
+
+            <!-- Jauge de confiance -->
+            <div class="confidence-section">
+              <div class="conf-header">
+                <span>PROBABILITÉ DE PARASITISME</span>
+                <span id="conf-pct">—</span>
+              </div>
+              <div class="conf-track">
+                <div class="conf-fill" id="conf-fill"></div>
+                <div class="conf-glow" id="conf-glow"></div>
+              </div>
+            </div>
+
+            <button class="btn-reset" id="btn-reset">
+              <i class="fas fa-redo"></i> NOUVELLE ANALYSE
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MODÈLES ── -->
+  <section id="models">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <div>
+          <p class="section-label">PERFORMANCES DES MODÈLES</p>
+          <h2 class="section-title">Comparaison des <span class="accent-glow">3 architectures CNN</span></h2>
+        </div>
       </div>
 
-      <!-- COLONNE DROITE : tableau comparatif -->
-      <div class="col-lg-7">
-        <div class="card-dark">
-          <h2 class="card-title-sm">📊 Comparaison des 3 CNN</h2>
-          <div class="table-responsive">
-            <table class="table table-dark table-hover table-sm">
-              <thead>
-                <tr>
-                  <th>Modèle</th>
-                  <th>Accuracy</th>
-                  <th>Précision</th>
-                  <th>Rappel</th>
-                  <th>F1-Score</th>
-                </tr>
-              </thead>
-              <tbody id="table-body">
-                <tr><td colspan="5" class="text-center text-muted">Chargement…</td></tr>
-              </tbody>
-            </table>
+      <!-- Meilleur modèle -->
+      <div class="best-model-banner" id="best-banner">
+        <div class="bm-icon"><i class="fas fa-trophy"></i></div>
+        <div class="bm-info">
+          <span class="bm-label">MEILLEUR MODÈLE</span>
+          <span class="bm-name" id="best-model-name">Chargement…</span>
+        </div>
+        <div class="bm-metrics">
+          <div class="bm-metric">
+            <span id="m-acc">—</span>
+            <small>Accuracy</small>
+          </div>
+          <div class="bm-metric">
+            <span id="m-prec">—</span>
+            <small>Précision</small>
+          </div>
+          <div class="bm-metric">
+            <span id="m-rec">—</span>
+            <small>Rappel</small>
+          </div>
+          <div class="bm-metric">
+            <span id="m-f1">—</span>
+            <small>F1-Score</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tableau comparatif -->
+      <div class="table-wrap">
+        <table class="models-table">
+          <thead>
+            <tr>
+              <th>MODÈLE</th>
+              <th>ACCURACY</th>
+              <th>PRÉCISION</th>
+              <th>RAPPEL</th>
+              <th>F1-SCORE</th>
+              <th>STATUT</th>
+            </tr>
+          </thead>
+          <tbody id="models-tbody">
+            <tr>
+              <td colspan="6" class="tbl-loading">
+                <i class="fas fa-circle-notch fa-spin"></i> Chargement des données…
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cartes explicatives des architectures -->
+      <div class="arch-cards">
+        <div class="arch-card">
+          <div class="arch-num">01</div>
+          <h3>CNN Simple</h3>
+          <p>2 blocs Conv+Pool. Architecture de référence rapide à entraîner. Idéale comme point de comparaison.</p>
+          <div class="arch-tag">~200K paramètres</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-num">02</div>
+          <h3>CNN Deep</h3>
+          <p>3 blocs Conv+Pool. Plus profond pour capturer des features complexes comme la forme du parasite.</p>
+          <div class="arch-tag">~500K paramètres</div>
+        </div>
+        <div class="arch-card featured">
+          <div class="arch-num">03</div>
+          <div class="arch-badge">MEILLEUR</div>
+          <h3>CNN + BatchNorm</h3>
+          <p>3 blocs avec Batch Normalization. Entraînement plus stable et convergence plus rapide.</p>
+          <div class="arch-tag">~500K paramètres</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── À PROPOS ── -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <div>
+          <p class="section-label">LE PROJET & L'AUTEUR</p>
+          <h2 class="section-title">Papa Malick <span class="accent-glow">NDIAYE</span></h2>
+        </div>
+      </div>
+
+      <div class="about-grid">
+
+        <!-- Profil -->
+        <div class="about-profile">
+          <div class="profile-avatar">
+            <i class="fas fa-user-astronaut"></i>
+          </div>
+          <div class="profile-info">
+            <h3>Papa Malick NDIAYE</h3>
+            <p class="profile-role">Étudiant · Master Data Science & Génie Logiciel</p>
+            <p class="profile-school">
+              <i class="fas fa-university"></i>
+              Université Alioune Diop de Bambey — UADB
+            </p>
+            <p class="profile-bio">
+              Passionné par le Deep Learning et la vision par ordinateur,
+              je développe des solutions IA appliquées à des problèmes
+              de santé publique en Afrique.
+            </p>
+            <div class="profile-links">
+              <a href="https://github.com/pa-malick/MALARIA_DETECTION" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309" target="_blank">
+                <i class="fab fa-linkedin"></i> LinkedIn
+              </a>
+              <a href="mailto:njaymika@gmail.com">
+                <i class="fas fa-envelope"></i> Email
+              </a>
+            </div>
           </div>
         </div>
 
-        <!-- Info médicale -->
-        <div class="info-card mt-4">
-          <h3>ℹ️ À propos du paludisme</h3>
-          <p>Le paludisme est causé par le parasite <em>Plasmodium</em>, transmis par des moustiques <em>Anophèles</em>. Ce modèle analyse des images de frottis sanguins pour détecter la présence de parasites dans les cellules rouges.</p>
-          <p class="mb-0"><strong>Classes :</strong> <span class="badge-parasitized">Parasitized</span> (cellule infectée) · <span class="badge-uninfected">Uninfected</span> (cellule saine)</p>
+        <!-- Pipeline du projet -->
+        <div class="about-pipeline">
+          <h3>Pipeline du projet</h3>
+          <div class="pipeline-steps">
+            <div class="pip-step">
+              <div class="pip-icon"><i class="fas fa-database"></i></div>
+              <div class="pip-info">
+                <strong>Chargement</strong>
+                <small>27 558 images PNG</small>
+              </div>
+            </div>
+            <div class="pip-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="pip-step">
+              <div class="pip-icon"><i class="fas fa-sliders-h"></i></div>
+              <div class="pip-info">
+                <strong>Prétraitement</strong>
+                <small>Normalisation + Augmentation</small>
+              </div>
+            </div>
+            <div class="pip-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="pip-step">
+              <div class="pip-icon"><i class="fas fa-brain"></i></div>
+              <div class="pip-info">
+                <strong>Entraînement</strong>
+                <small>3 CNN + EarlyStopping</small>
+              </div>
+            </div>
+            <div class="pip-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="pip-step">
+              <div class="pip-icon"><i class="fas fa-chart-bar"></i></div>
+              <div class="pip-info">
+                <strong>Évaluation</strong>
+                <small>Accuracy · F1 · Rappel</small>
+              </div>
+            </div>
+            <div class="pip-arrow"><i class="fas fa-chevron-down"></i></div>
+            <div class="pip-step active">
+              <div class="pip-icon"><i class="fas fa-rocket"></i></div>
+              <div class="pip-info">
+                <strong>Déploiement</strong>
+                <small>Flask + Docker + Render</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stack technique -->
+          <h3 style="margin-top:1.5rem">Stack technique</h3>
+          <div class="tech-tags">
+            <span><i class="fab fa-python"></i> Python</span>
+            <span><i class="fas fa-brain"></i> TensorFlow / Keras</span>
+            <span><i class="fas fa-server"></i> Flask</span>
+            <span><i class="fab fa-docker"></i> Docker</span>
+            <span><i class="fab fa-github"></i> GitHub</span>
+            <span><i class="fas fa-chart-area"></i> Matplotlib</span>
+          </div>
         </div>
+
       </div>
-
     </div>
-  </div>
+  </section>
 
-  <footer class="text-center py-3">
-    <small>Papa Malick NDIAYE · Master DSGL · Université Alioune Diop de Bambey © 2025</small>
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-brand">MALARIA<span class="accent">.</span>AI</span>
+      <p class="footer-copy">
+        Papa Malick NDIAYE · Master DSGL · Université Alioune Diop de Bambey © 2025
+      </p>
+      <div class="footer-socials">
+        <a href="https://github.com/pa-malick/MALARIA_DETECTION" target="_blank"
+           aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309" target="_blank"
+           aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:njaymika@gmail.com"
+           aria-label="Email"><i class="fas fa-envelope"></i></a>
+      </div>
+    </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Notre JavaScript (Three.js + Anime.js + GSAP + logique app) -->
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

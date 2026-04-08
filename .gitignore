@@ -1,0 +1,30 @@
+# Environnement Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+
+# Fichiers générés
+metrics/*.png
+metrics/results.json
+
+# IDE et outils
+.vscode/
+.idea/
+*.code-workspace
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Rapport Word
+*.docx
+~$*.docx
+*.tmp

@@ -1,13 +1,5 @@
-# ================================================================
-# data_loader.py  –  Chargement et visualisation des images
-#
-# Auteur : Papa Malick NDIAYE
-# Master Data Science & Génie Logiciel – UADB
-#
-# Le dataset cell_images contient deux dossiers :
-#   - Parasitized/   → cellules infectées par le paludisme
-#   - Uninfected/    → cellules saines
-# ================================================================
+# data_loader.py – Chargement et visualisation du dataset
+# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
 
 import os
 import random
@@ -18,28 +10,14 @@ import matplotlib.pyplot as plt
 from PIL import Image
 
 
-# Noms des deux classes (correspondent aux noms des dossiers)
 CLASSES = ["Parasitized", "Uninfected"]
 LABELS  = {0: "Parasitized", 1: "Uninfected"}
 
 
 def charger_chemins(data_dir: str) -> tuple:
-    """
-    Parcourt les deux dossiers du dataset et retourne les chemins
-    de toutes les images avec leurs étiquettes.
-
-    Paramètres
-    ----------
-    data_dir : str
-        Chemin vers le dossier cell_images/
-        (doit contenir Parasitized/ et Uninfected/)
-
-    Retourne
-    --------
-    chemins : list[str]   – chemins complets des images
-    labels  : list[int]   – 0 = Parasitized, 1 = Uninfected
-    """
-    chemins, labels = [], []
+    """Récupère les chemins de toutes les images et leurs étiquettes."""
+    chemins = []
+    labels  = []
 
     for label_id, classe in enumerate(CLASSES):
         dossier = os.path.join(data_dir, classe)
@@ -47,7 +25,7 @@ def charger_chemins(data_dir: str) -> tuple:
         if not os.path.exists(dossier):
             raise FileNotFoundError(
                 f"Dossier introuvable : '{dossier}'\n"
-                f"→ Vérifiez que cell_images/ contient bien '{classe}/'"
+                f"Vérifiez que cell_images/ contient bien '{classe}/'"
             )
 
         fichiers = [
@@ -59,29 +37,20 @@ def charger_chemins(data_dir: str) -> tuple:
             chemins.append(os.path.join(dossier, f))
             labels.append(label_id)
 
-        print(f"  [{classe}]  {len(fichiers)} images chargées (label={label_id})")
+        print(f"  [{classe}]  {len(fichiers)} images chargées")
 
-    print(f"\n[✔] Total : {len(chemins)} images  |  "
+    print(f"\n  Total : {len(chemins)} images  |  "
           f"Parasitized={labels.count(0)}  Uninfected={labels.count(1)}")
+
     return chemins, labels
 
 
 def afficher_exemples(chemins: list, labels: list,
-                      n: int = 8, save_path: str = "metrics/exemples_images.png") -> None:
-    """
-    Affiche n exemples d'images (moitié infectées, moitié saines)
-    avec leurs étiquettes et sauvegarde la figure.
-
-    Paramètres
-    ----------
-    chemins   : list  – chemins des images
-    labels    : list  – étiquettes correspondantes
-    n         : int   – nombre d'images à afficher (doit être pair)
-    save_path : str   – chemin de sauvegarde de la figure
-    """
+                      n: int = 8,
+                      save_path: str = "metrics/exemples_images.png") -> None:
+    """Sauvegarde une grille de n exemples d'images (moitié infectées, moitié saines)."""
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
-    # On prend n/2 images de chaque classe
     idx_parasit  = [i for i, l in enumerate(labels) if l == 0]
     idx_uninfect = [i for i, l in enumerate(labels) if l == 1]
 
@@ -105,24 +74,22 @@ def afficher_exemples(chemins: list, labels: list,
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"[✔] Exemples sauvegardés : {save_path}")
+    print(f"  Exemples sauvegardés : {save_path}")
 
 
 def stats_dataset(chemins: list, labels: list) -> None:
-    """
-    Affiche des statistiques simples sur le dataset :
-    nombre d'images par classe, taille moyenne des images.
-    """
+    """Affiche quelques statistiques de base sur le dataset."""
     print("\n── Statistiques du dataset ──────────────────────────")
     print(f"  Total images    : {len(chemins)}")
     print(f"  Parasitized     : {labels.count(0)}")
     print(f"  Uninfected      : {labels.count(1)}")
 
-    # Taille de quelques images (échantillon de 20)
+    # Vérification sur un échantillon pour ne pas parcourir les 27 000 images
     echantillon = random.sample(chemins, min(20, len(chemins)))
-    tailles = [Image.open(c).size for c in echantillon]
+    tailles  = [Image.open(c).size for c in echantillon]
     largeurs = [t[0] for t in tailles]
     hauteurs = [t[1] for t in tailles]
+
     print(f"  Taille moyenne  : {int(np.mean(largeurs))} × {int(np.mean(hauteurs))} px")
     print(f"  Taille min/max  : {min(largeurs)}×{min(hauteurs)} / {max(largeurs)}×{max(hauteurs)} px")
     print("─────────────────────────────────────────────────────\n")
