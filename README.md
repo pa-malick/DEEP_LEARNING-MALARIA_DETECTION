@@ -14,6 +14,7 @@
 
 🐙 **GitHub :** https://github.com/pa-malick/MALARIA_DETECTION
 💼 **LinkedIn :** https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309
+🖥️ **Démo_live :** https://deep-learning-malaria-detection-znf2.onrender.com
 
 </div>
 
@@ -177,6 +178,7 @@ Master Data Science & Génie Logiciel — Université Alioune Diop de Bambey (UA
 📧 njaymika@gmail.com
 🐙 [github.com/pa-malick/MALARIA_DETECTION](https://github.com/pa-malick/MALARIA_DETECTION)
 💼 [linkedin.com/in/papa-malick-ndiaye-b58b22309](https://www.linkedin.com/in/papa-malick-ndiaye-b58b22309)
+🖥️ (https://deep-learning-malaria-detection-znf2.onrender.com)
 
 ---
 
