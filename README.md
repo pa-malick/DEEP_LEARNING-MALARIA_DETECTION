@@ -93,17 +93,17 @@ MALARIA_DETECTION/
 git clone https://github.com/pa-malick/MALARIA_DETECTION.git
 cd MALARIA_DETECTION
 
-# 2. Installer
-make install
+# 2. Installer les dépendances
+pip install -r requirements.txt
 
 # 3. Placer le dataset
 # → data/cell_images/Parasitized/ et data/cell_images/Uninfected/
 
 # 4. Lancer la pipeline ML
-make run
+python main.py
 
 # 5. Démarrer l'API Flask
-make serve
+python app/app.py
 # → http://localhost:5000
 ```
 
