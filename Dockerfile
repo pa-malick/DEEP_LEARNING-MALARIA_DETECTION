@@ -1,7 +1,7 @@
 # Dockerfile – MALARIA_DETECTION
 # Auteur : Papa Malick NDIAYE | Master DSGL – UADB
 
-FROM python:3.10-slim
+FROM python:3.13-slim
 
 LABEL maintainer="Papa Malick NDIAYE <njaymika@gmail.com>"
 LABEL description="Malaria Detection – Deep Learning CNN + Flask API"
