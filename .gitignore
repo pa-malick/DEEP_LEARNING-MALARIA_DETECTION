@@ -15,7 +15,7 @@ metrics/results.json
 .vscode/
 .idea/
 *.code-workspace
-.claude/
+
 
 # OS
 .DS_Store
