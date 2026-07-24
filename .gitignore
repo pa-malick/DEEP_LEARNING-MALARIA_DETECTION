@@ -7,14 +7,26 @@ venv/
 env/
 .venv/
 
-# Fichiers générés
-metrics/*.png
-metrics/results.json
+# Dataset : 27 558 images, 400 Mo. A telecharger depuis Kaggle (voir README).
+data/
+
+# Modeles entraines : environ 26 Mo par fichier, a publier via GitHub Releases.
+models/
+
+# Images uploadees par les utilisateurs de l'API
+app/static/uploads/
+
+# metrics/ est volontairement versionne : 520 Ko de graphiques et de
+# metriques qui documentent les resultats publies dans le README.
 
 # IDE et outils
 .vscode/
 .idea/
 *.code-workspace
+.pytest_cache/
+
+# Fichiers temporaires Word
+~WRL*.tmp
 
 
 # OS

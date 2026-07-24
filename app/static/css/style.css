@@ -1,5 +1,5 @@
-/* style.css – Interface Malaria Detection
-   Auteur : Papa Malick NDIAYE | Master DSGL – UADB */
+/* style.css - Interface Malaria Detection
+   Auteur : Papa Malick NDIAYE | Master DSGL, UADB */
 
 /* ── Variables globales ── */
 :root {
@@ -1046,6 +1046,33 @@ footer {
 }
 
 .footer-copy { font-size: 0.7rem; color: var(--muted); }
+
+.footer-note {
+  font-size : 0.68rem;
+  color     : var(--muted);
+  max-width : 40rem;
+  margin-top: 0.3rem;
+}
+
+/* ── Avertissement medical ──
+   Volontairement sobre : pas de couleur d'alerte, il doit etre lu
+   comme une mention legale permanente, pas comme une erreur. */
+.avertissement {
+  font-size    : 0.78rem;
+  color        : var(--muted);
+  line-height  : 1.6;
+  max-width    : 52rem;
+  margin       : 0 0 1.6rem;
+  padding-left : 0.9rem;
+  border-left  : 1px solid var(--border);
+}
+
+.result-note {
+  font-size  : 0.72rem;
+  color      : var(--muted);
+  line-height: 1.55;
+  margin     : 0.9rem 0 0;
+}
 
 .footer-socials { display: flex; gap: 0.6rem; }
 

@@ -1,23 +1,51 @@
 {
     "meilleur_modele": "CNN_Deep",
+    "critere_selection": "accuracy sur le jeu de validation",
+    "classe_positive": "Parasitized",
     "resultats": {
         "CNN_Simple": {
-            "accuracy": 0.9623,
-            "precision": 0.9548,
-            "recall": 0.9705,
-            "f1_score": 0.9626
+            "accuracy": 0.9678,
+            "sensibilite": 0.9544,
+            "specificite": 0.9771,
+            "precision": 0.9661,
+            "f1_score": 0.9602
         },
         "CNN_Deep": {
-            "accuracy": 0.9664,
-            "precision": 0.963,
-            "recall": 0.97,
-            "f1_score": 0.9665
+            "accuracy": 0.9678,
+            "sensibilite": 0.9465,
+            "specificite": 0.9824,
+            "precision": 0.9736,
+            "f1_score": 0.9599
         },
         "CNN_BN": {
-            "accuracy": 0.9586,
-            "precision": 0.9459,
-            "recall": 0.9729,
-            "f1_score": 0.9592
+            "accuracy": 0.9612,
+            "sensibilite": 0.9451,
+            "specificite": 0.9722,
+            "precision": 0.9588,
+            "f1_score": 0.9519
+        }
+    },
+    "validation": {
+        "CNN_Simple": {
+            "accuracy": 0.9344,
+            "sensibilite": 0.8933,
+            "specificite": 0.9628,
+            "precision": 0.9433,
+            "f1_score": 0.9176
+        },
+        "CNN_Deep": {
+            "accuracy": 0.9394,
+            "sensibilite": 0.8946,
+            "specificite": 0.9704,
+            "precision": 0.9543,
+            "f1_score": 0.9235
+        },
+        "CNN_BN": {
+            "accuracy": 0.9377,
+            "sensibilite": 0.8933,
+            "specificite": 0.9685,
+            "precision": 0.9515,
+            "f1_score": 0.9215
         }
     }
 }

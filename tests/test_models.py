@@ -1,12 +1,7 @@
-# test_models.py – Tests unitaires : architectures CNN
-# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+# test_models.py - Tests unitaires : architectures CNN
+# Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
-import sys
-import os
-import pytest
 import numpy as np
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
 from models import get_modeles, build_cnn_simple, build_cnn_deep, build_cnn_bn
 

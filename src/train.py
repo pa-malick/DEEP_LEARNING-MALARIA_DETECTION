@@ -1,5 +1,5 @@
-# train.py – Entraînement des modèles CNN
-# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+# train.py - Entraînement des modèles CNN
+# Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
 import os
 from tensorflow.keras.callbacks import (
@@ -16,6 +16,10 @@ def entrainer_modele(nom: str, modele, gen_train, gen_val,
     os.makedirs(models_dir, exist_ok=True)
     chemin_checkpoint = os.path.join(models_dir, f"{nom}.keras")
 
+    # Les trois callbacks surveillent la meme metrique (val_loss). Sinon le
+    # modele restaure en memoire par EarlyStopping et le fichier ecrit par
+    # ModelCheckpoint correspondent a deux epoques differentes, et les
+    # metriques publiees ne decrivent plus le modele reellement sauvegarde.
     callbacks = [
         # Arrêt si val_loss ne s'améliore plus pendant 5 époques
         EarlyStopping(
@@ -24,10 +28,10 @@ def entrainer_modele(nom: str, modele, gen_train, gen_val,
             restore_best_weights=True,
             verbose=1
         ),
-        # Sauvegarde du meilleur état selon val_accuracy
+        # Sauvegarde du meilleur état, sur la même métrique
         ModelCheckpoint(
             filepath=chemin_checkpoint,
-            monitor="val_accuracy",
+            monitor="val_loss",
             save_best_only=True,
             verbose=0
         ),
@@ -41,10 +45,10 @@ def entrainer_modele(nom: str, modele, gen_train, gen_val,
         )
     ]
 
-    print(f"\n{'─' * 50}")
+    print(f"\n{'-' * 50}")
     print(f"  Entraînement : {nom}")
     print(f"  Époques max  : {epochs}  |  EarlyStopping patience=5")
-    print(f"{'─' * 50}")
+    print(f"{'-' * 50}")
 
     history = modele.fit(
         gen_train,
@@ -54,18 +58,18 @@ def entrainer_modele(nom: str, modele, gen_train, gen_val,
         verbose=1
     )
 
-    print(f"\n  {nom} entraîné  →  sauvegardé dans {chemin_checkpoint}")
+    print(f"\n  {nom} entraîné  ->  sauvegardé dans {chemin_checkpoint}")
     return history.history
 
 
 def entrainer_tous(modeles: dict, gen_train, gen_val,
                    epochs: int = 20) -> dict:
     """Lance l'entraînement séquentiel de tous les modèles."""
-    print("\n┌─ ENTRAÎNEMENT DES 3 CNN ──────────────────────────────┐")
+    print("\n+- ENTRAÎNEMENT DES 3 CNN ------------------------------+")
     histories = {}
 
     for nom, modele in modeles.items():
         histories[nom] = entrainer_modele(nom, modele, gen_train, gen_val, epochs)
 
-    print("\n└─ Tous les modèles ont été entraînés ──────────────────┘\n")
+    print("\n+- Tous les modèles ont été entraînés ------------------+\n")
     return histories

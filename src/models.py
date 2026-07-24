@@ -1,5 +1,5 @@
-# models.py – Les 3 architectures CNN comparées
-# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+# models.py - Les 3 architectures CNN comparées
+# Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import (
@@ -94,6 +94,6 @@ def get_modeles() -> dict:
             loss="binary_crossentropy",
             metrics=["accuracy"]
         )
-        print(f"  {nom} compilé  –  {modele.count_params():,} paramètres")
+        print(f"  {nom} compilé : {modele.count_params():,} paramètres")
 
     return modeles

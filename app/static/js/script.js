@@ -1,5 +1,5 @@
-// script.js – Interface Malaria Detection
-// Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+// script.js - Interface Malaria Detection
+// Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
 
 // --- Fond Three.js ---
@@ -188,11 +188,14 @@ function afficherResultat(data) {
   const estParasite = data.classe_id === 0;
   const cls         = estParasite ? "parasitized" : "uninfected";
 
-  document.getElementById("result-verdict").textContent = estParasite ? "⚠ ALERTE PARASITISME" : "✓ CELLULE SAINE";
+  document.getElementById("result-verdict").textContent = estParasite ? "CELLULE PARASITÉE" : "CELLULE SAINE";
   document.getElementById("result-verdict").className   = `result-verdict ${cls}`;
   document.getElementById("result-label").textContent   = data.label;
   document.getElementById("result-label").className     = `result-label ${cls}`;
   document.getElementById("conf-pct").textContent       = data.probabilite + "%";
+  document.getElementById("result-note").textContent    =
+    `Probabilité de parasitisme estimée : ${data.proba_parasite}%. `
+    + "Résultat indicatif, sans valeur diagnostique.";
   document.getElementById("conf-fill").className        = `conf-fill ${cls}`;
   document.getElementById("conf-fill").style.width      = "0%";
 
@@ -230,10 +233,10 @@ async function chargerMetriques() {
     document.getElementById("hero-acc").textContent      = accStr;
     document.getElementById("stat-acc").textContent      = accStr;
     document.getElementById("best-model-name").textContent = meilleur;
-    document.getElementById("m-acc").textContent  = (m.accuracy  * 100).toFixed(1) + "%";
-    document.getElementById("m-prec").textContent = (m.precision * 100).toFixed(1) + "%";
-    document.getElementById("m-rec").textContent  = (m.recall    * 100).toFixed(1) + "%";
-    document.getElementById("m-f1").textContent   = (m.f1_score  * 100).toFixed(1) + "%";
+    document.getElementById("m-acc").textContent  = (m.accuracy    * 100).toFixed(1) + "%";
+    document.getElementById("m-sens").textContent = (m.sensibilite * 100).toFixed(1) + "%";
+    document.getElementById("m-spec").textContent = (m.specificite * 100).toFixed(1) + "%";
+    document.getElementById("m-f1").textContent   = (m.f1_score    * 100).toFixed(1) + "%";
 
     const tbody = document.getElementById("models-tbody");
     tbody.innerHTML = "";
@@ -242,12 +245,12 @@ async function chargerMetriques() {
       const tr = document.createElement("tr");
       if (estMeilleur) tr.className = "best-row";
       tr.innerHTML = `
-        <td>${nom}${estMeilleur ? ' <span class="badge-best">MEILLEUR</span>' : ""}</td>
-        <td>${(met.accuracy  * 100).toFixed(2)}%</td>
-        <td>${(met.precision * 100).toFixed(2)}%</td>
-        <td>${(met.recall    * 100).toFixed(2)}%</td>
-        <td>${(met.f1_score  * 100).toFixed(2)}%</td>
-        <td>${estMeilleur ? "✓ Déployé" : "—"}</td>
+        <td>${nom}${estMeilleur ? ' <span class="badge-best">RETENU</span>' : ""}</td>
+        <td>${(met.accuracy    * 100).toFixed(2)}%</td>
+        <td>${(met.sensibilite * 100).toFixed(2)}%</td>
+        <td>${(met.specificite * 100).toFixed(2)}%</td>
+        <td>${(met.f1_score    * 100).toFixed(2)}%</td>
+        <td>${estMeilleur ? "Déployé" : ""}</td>
       `;
       tbody.appendChild(tr);
     }

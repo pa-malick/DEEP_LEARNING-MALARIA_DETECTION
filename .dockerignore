@@ -1,0 +1,28 @@
+# Le dataset ne sert qu'a l'entrainement, jamais a l'API.
+# Sans cette exclusion, l'image Docker embarque 400 Mo inutiles.
+data/
+
+# Environnement Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Git et outils
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Documents et fichiers generes hors modeles
+*.docx
+*.log
+metrics/*.png
+app/static/uploads/*
+
+# Tests et docs non necessaires a l'execution
+tests/
+README.md
+Makefile

@@ -1,5 +1,5 @@
-# docker-compose.yml – MALARIA_DETECTION
-# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+# docker-compose.yml - MALARIA_DETECTION
+# Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
 services:
   malaria-api:
@@ -13,10 +13,11 @@ services:
     environment:
       - PORT=5000
       - FLASK_ENV=production
+    # L'API n'a besoin que du modele et des metriques.
+    # Le dataset ne sert qu'a l'entrainement, hors conteneur.
     volumes:
-      - ./models:/app/models
-      - ./metrics:/app/metrics
-      - ./data:/app/data
+      - ./models:/app/models:ro
+      - ./metrics:/app/metrics:ro
     restart: unless-stopped
     healthcheck:
       test        : ["CMD", "curl", "-f", "http://localhost:5000/health"]

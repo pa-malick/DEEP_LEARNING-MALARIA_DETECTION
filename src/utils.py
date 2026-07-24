@@ -1,5 +1,5 @@
-# utils.py – Sauvegarde, chargement et prédiction sur une image
-# Auteur : Papa Malick NDIAYE | Master DSGL – UADB
+# utils.py - Sauvegarde, chargement et prédiction sur une image
+# Auteur : Papa Malick NDIAYE | Master DSGL, UADB
 
 import os
 import json
@@ -48,16 +48,25 @@ def preparer_image(image_path: str) -> np.ndarray:
 
 
 def predire_image(modele, image_path: str) -> dict:
-    """Retourne la prédiction pour une image de cellule."""
-    arr   = preparer_image(image_path)
-    proba = float(modele.predict(arr, verbose=0)[0][0])
+    """
+    Retourne la prédiction pour une image de cellule.
 
-    classe_id = 1 if proba > 0.5 else 0
+    La sortie du modèle est P(Uninfected), la classe 1 étant Uninfected.
+    On expose donc deux valeurs distinctes, souvent confondues :
+      probabilite     : confiance du modèle dans la classe qu'il a prédite
+      proba_parasite  : probabilité que la cellule soit parasitée
+    """
+    arr            = preparer_image(image_path)
+    proba_sain     = float(modele.predict(arr, verbose=0)[0][0])
+    proba_parasite = 1.0 - proba_sain
+
+    classe_id = 1 if proba_sain > 0.5 else 0
     label     = "Uninfected" if classe_id == 1 else "Parasitized"
-    proba_aff = proba if classe_id == 1 else 1 - proba
+    confiance = proba_sain if classe_id == 1 else proba_parasite
 
     return {
-        "label"      : label,
-        "probabilite": round(proba_aff * 100, 2),
-        "classe_id"  : classe_id
+        "label"         : label,
+        "probabilite"   : round(confiance * 100, 2),
+        "proba_parasite": round(proba_parasite * 100, 2),
+        "classe_id"     : classe_id
     }

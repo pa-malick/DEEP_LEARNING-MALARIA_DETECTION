@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malaria Detection — Deep Learning | Papa Malick NDIAYE</title>
+  <title>Malaria Detection | Papa Malick NDIAYE</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -70,7 +70,8 @@
       <p class="hero-desc" id="hero-desc">
         Un système de Deep Learning capable de détecter automatiquement
         le parasite <em>Plasmodium</em> dans les cellules sanguines
-        avec une précision de <strong id="hero-acc">—</strong>.
+        avec une accuracy de <strong id="hero-acc">...</strong>
+        sur le jeu de test.
       </p>
 
       <!-- Boutons CTA -->
@@ -96,7 +97,7 @@
         </div>
         <div class="hstat-sep"></div>
         <div class="hstat">
-          <span class="hstat-val" id="stat-acc">—</span>
+          <span class="hstat-val" id="stat-acc">-</span>
           <span class="hstat-lbl">Meilleure accuracy</span>
         </div>
         <div class="hstat-sep"></div>
@@ -125,6 +126,14 @@
           <h2 class="section-title">Scanner une <span class="accent-glow">cellule sanguine</span></h2>
         </div>
       </div>
+
+      <p class="avertissement">
+        Projet académique. Cet outil n'est pas un dispositif médical et ne
+        constitue pas un diagnostic. Selon les patients, le modèle ne détecte
+        pas 5 à 10 % des cellules parasitées, et il n'a été validé que sur le
+        jeu de données NIH. Seul un professionnel de santé peut poser un
+        diagnostic de paludisme.
+      </p>
 
       <div class="predict-layout">
 
@@ -194,14 +203,16 @@
             <!-- Jauge de confiance -->
             <div class="confidence-section">
               <div class="conf-header">
-                <span>PROBABILITÉ DE PARASITISME</span>
-                <span id="conf-pct">—</span>
+                <span>CONFIANCE DU MODÈLE</span>
+                <span id="conf-pct">-</span>
               </div>
               <div class="conf-track">
                 <div class="conf-fill" id="conf-fill"></div>
                 <div class="conf-glow" id="conf-glow"></div>
               </div>
             </div>
+
+            <p class="result-note" id="result-note"></p>
 
             <button class="btn-reset" id="btn-reset">
               <i class="fas fa-redo"></i> NOUVELLE ANALYSE
@@ -233,19 +244,19 @@
         </div>
         <div class="bm-metrics">
           <div class="bm-metric">
-            <span id="m-acc">—</span>
+            <span id="m-acc">-</span>
             <small>Accuracy</small>
           </div>
           <div class="bm-metric">
-            <span id="m-prec">—</span>
-            <small>Précision</small>
+            <span id="m-sens">-</span>
+            <small>Sensibilité</small>
           </div>
           <div class="bm-metric">
-            <span id="m-rec">—</span>
-            <small>Rappel</small>
+            <span id="m-spec">-</span>
+            <small>Spécificité</small>
           </div>
           <div class="bm-metric">
-            <span id="m-f1">—</span>
+            <span id="m-f1">-</span>
             <small>F1-Score</small>
           </div>
         </div>
@@ -258,8 +269,8 @@
             <tr>
               <th>MODÈLE</th>
               <th>ACCURACY</th>
-              <th>PRÉCISION</th>
-              <th>RAPPEL</th>
+              <th>SENSIBILITÉ</th>
+              <th>SPÉCIFICITÉ</th>
               <th>F1-SCORE</th>
               <th>STATUT</th>
             </tr>
@@ -288,9 +299,8 @@
           <p>3 blocs Conv+Pool. Plus profond pour capturer des features complexes comme la forme du parasite.</p>
           <div class="arch-tag">~500K paramètres</div>
         </div>
-        <div class="arch-card featured">
+        <div class="arch-card">
           <div class="arch-num">03</div>
-          <div class="arch-badge">MEILLEUR</div>
           <h3>CNN + BatchNorm</h3>
           <p>3 blocs avec Batch Normalization. Entraînement plus stable et convergence plus rapide.</p>
           <div class="arch-tag">~500K paramètres</div>
@@ -322,7 +332,7 @@
             <p class="profile-role">Étudiant · Master Data Science & Génie Logiciel</p>
             <p class="profile-school">
               <i class="fas fa-university"></i>
-              Université Alioune Diop de Bambey — UADB
+              Université Alioune Diop de Bambey : UADB
             </p>
             <p class="profile-bio">
               Passionné par le Deep Learning et la vision par ordinateur,
@@ -375,7 +385,7 @@
               <div class="pip-icon"><i class="fas fa-chart-bar"></i></div>
               <div class="pip-info">
                 <strong>Évaluation</strong>
-                <small>Accuracy · F1 · Rappel</small>
+                <small>Sensibilité · Spécificité · F1</small>
               </div>
             </div>
             <div class="pip-arrow"><i class="fas fa-chevron-down"></i></div>
@@ -410,6 +420,10 @@
       <span class="footer-brand">MALARIA<span class="accent">.</span>AI</span>
       <p class="footer-copy">
         Papa Malick NDIAYE · Master DSGL · Université Alioune Diop de Bambey © 2025
+      </p>
+      <p class="footer-note">
+        Projet académique. N'est pas un dispositif médical et ne remplace pas
+        un diagnostic établi par un professionnel de santé.
       </p>
       <div class="footer-socials">
         <a href="https://github.com/pa-malick/MALARIA_DETECTION" target="_blank"
