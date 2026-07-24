@@ -6,7 +6,7 @@ de neurones convolutifs, avec une API Flask de démonstration.
 **Papa Malick NDIAYE** · Master Data Science & Génie Logiciel · Université Alioune Diop de Bambey
 
 - Démo : https://deep-learning-malaria-detection-znf2.onrender.com
-- Code : https://github.com/pa-malick/MALARIA_DETECTION
+- Code : https://github.com/pa-malick/DEEP_LEARNING-MALARIA_DETECTION
 - Contact : njaymika@gmail.com
 
 > Projet académique. Cet outil n'est pas un dispositif médical et ne constitue
@@ -59,7 +59,7 @@ Deux métriques comptent ici plus que l'accuracy :
 
 - **Sensibilité** : proportion de cellules parasitées effectivement détectées.
   C'est la métrique critique en dépistage, car un faux négatif est un malade
-  renvoyé chez lui. Le modèle retenu manque 116 cellules parasitées sur 2 067.
+  renvoyé chez lui. Le modèle retenu manque 75 cellules parasitées sur 1 403.
 - **Spécificité** : proportion de cellules saines correctement classées.
 
 ## Limites
@@ -96,7 +96,7 @@ avant toute interprétation des chiffres ci-dessus.
 ## Structure
 
 ```
-MALARIA_DETECTION/
+DEEP_LEARNING-MALARIA_DETECTION/
 ├── data/cell_images/      Dataset (Parasitized/ + Uninfected/), non versionné
 ├── src/
 │   ├── data_loader.py     Chargement et statistiques
@@ -124,8 +124,8 @@ Le dataset et les modèles ne sont pas versionnés (400 Mo et 100 Mo). Il faut
 donc télécharger le premier et régénérer les seconds.
 
 ```bash
-git clone https://github.com/pa-malick/MALARIA_DETECTION.git
-cd MALARIA_DETECTION
+git clone https://github.com/pa-malick/DEEP_LEARNING-MALARIA_DETECTION.git
+cd DEEP_LEARNING-MALARIA_DETECTION
 pip install -r requirements.txt
 ```
 

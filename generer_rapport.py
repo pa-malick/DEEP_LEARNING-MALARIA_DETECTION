@@ -28,7 +28,7 @@ ASSETS_DIR  = "assets"
 DATA_DIR    = "data/cell_images"
 
 DEMO_URL   = "https://deep-learning-malaria-detection-znf2.onrender.com/"
-DEPOT_URL  = "https://github.com/pa-malick/MALARIA_DETECTION"
+DEPOT_URL  = "https://github.com/pa-malick/DEEP_LEARNING-MALARIA_DETECTION"
 
 NOIR    = RGBColor(0, 0, 0)
 POLICE  = "Calibri"
