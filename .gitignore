@@ -10,8 +10,11 @@ env/
 # Dataset : 27 558 images, 400 Mo. A telecharger depuis Kaggle (voir README).
 data/
 
-# Modeles entraines : environ 26 Mo par fichier, a publier via GitHub Releases.
-models/
+# Modeles entraines : environ 26 Mo par fichier.
+# Seul best_model.keras est versionne, car l'API deployee en a besoin.
+# Les trois modeles intermediaires restent hors du depot.
+models/*
+!models/best_model.keras
 
 # Images uploadees par les utilisateurs de l'API
 app/static/uploads/
